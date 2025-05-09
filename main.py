@@ -18,7 +18,7 @@ SYMBOLS = {
 
 DERIV_TOKEN = os.environ.get("DERIV_TOKEN")
 
-async def fetch_candles(symbol, count=30):
+async def fetch_candles(symbol, count=100):
     url = "wss://ws.binaryws.com/websockets/v3?app_id=1089"
     async with websockets.connect(url) as ws:
         await ws.send(json.dumps({ "authorize": DERIV_TOKEN }))
@@ -70,7 +70,7 @@ def boomcrash():
         return jsonify({"error": "Invalid symbol"}), 400
 
     symbol = SYMBOLS[symbol_key]
-    candles = asyncio.run(fetch_candles(symbol))
+    candles = asyncio.run(fetch_candles(symbol, count=100))
     if not candles:
         return jsonify({"error": "No candle data"}), 500
 
@@ -83,3 +83,4 @@ def boomcrash():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
+
