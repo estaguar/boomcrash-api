@@ -1,0 +1,4 @@
+flask
+pandas
+websockets
+gunicorn
